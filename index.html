@@ -71,7 +71,7 @@
         const rpc_url = 'https://rpc.bitkubchain.io';
 		const web3 = new Web3(new Web3.providers.HttpProvider(rpc_url));
 		const card_template = ({ tokenid, image, name, rarity, description }) => `
-		  <div class="col-auto text-center m-1 bg-light border rounded-3 text-truncate" style="width:200px !important; height:300px !important">
+		  <div class="col-auto text-center m-1 bg-light border rounded-3 text-truncate" style="width:175px !important; height:300px !important">
 			<p class="text-center m-1 fw-bold fs-6">${name}</p>
 			<img src="${image}" tooltip="${description}" style="max-height:200px; max-width:155px; border-radius: 16px;"/>
 			<p class="text-center m-1">ID: ${tokenid}</p>
