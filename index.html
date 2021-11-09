@@ -16,6 +16,8 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap-reboot.min.css" integrity="sha512-stCMej6DXfErBwD8bQrJsG2dFPHNW9y8cmccQhW0o+GeSxKzjABmIVdwOzQ5Vlw4HYoEwrECGDRQs8xF0f9ssg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap-grid.min.css" integrity="sha512-q0LpKnEKG/pAf1qi1SAyX0lCNnrlJDjAvsyaygu07x8OF4CEOpQhBnYiFW6YDUnOOcyAEiEYlV4S9vEc6akTEw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js" integrity="sha512-pax4MlgXjHEPfCwcJLQhigY7+N8rt6bVvWLFyUMuxShv170X53TRzGPmPkZmGBhk+jikR8WBM4yl7A9WMHHqvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://rawgit.com/toddmotto/echo/master/dist/echo.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
     <style>
         body {
             /*min-height: 75rem;*/
@@ -73,7 +75,7 @@
 		const card_template = ({ tokenid, image, name, rarity, description }) => `
 		  <div class="col-auto text-center m-1 bg-light border rounded-3 text-truncate" style="width:175px !important; height:300px !important">
 			<p class="text-center m-1 fw-bold fs-6">${name}</p>
-			<img src="${image}" tooltip="${description}" style="max-height:200px; max-width:155px; border-radius: 16px;"/>
+			<img src="${image}" data-echo="${image}" tooltip="${description}" style="max-height:200px; max-width:155px; border-radius: 16px;"/>
 			<p class="text-center m-1">ID: ${tokenid}</p>
 			<p class="text-center m-1 fw-bold">Rarity: ${rarity}</p>
 		  </div>
@@ -89,12 +91,8 @@
 		
 		async function get_nft(contract_address, owner_address){
 			const abi_url = 'https://bkcscan.com/api?module=contract&action=getabi&address=' + contract_address;
-			const res = await fetch(abi_url);
-			const data = await res.json();
-			const abi = await JSON.parse(data["result"]);
-			const fanstoken_nft = await new web3.eth.Contract(abi, contract_address);
-			const symbol = await fanstoken_nft.methods.symbol().call();
-			const cards = await fanstoken_nft.methods.tokenOfOwnerByPage(owner_address, 1, 50).call();
+			let res, data, abi, fanstoken_nft, cards;
+			
 			async function get_nft_info(tokenURI){
 				const res = await fetch(tokenURI);
 				const card_info = await res.json();
@@ -112,12 +110,23 @@
 				}
 				return tokenURI;
 			}
-			const tokenURI = await get_tokenURI(cards, fanstoken_nft);
-			return tokenURI;
+			try {
+				res = await fetch(abi_url);
+				data = await res.json();
+				abi = await JSON.parse(data["result"]);
+				fanstoken_nft = await new web3.eth.Contract(abi, contract_address);
+				cards = await fanstoken_nft.methods.tokenOfOwnerByPage(owner_address, 1, 50).call();
+				const tokenURI = await get_tokenURI(cards, fanstoken_nft);
+				return tokenURI;
+			}
+			catch (e) {
+				console.log(e)
+				$('#all_cards').html('Error on loading please try again later.');
+			}
 		}
 		async function search_all_nft(address){
 			let all = [];
-			$('#all_cards').html('');
+			$('#all_cards').html('<div class="spinner-border mt-5" role="status" style="width:40px; height:40px"><span class="visually-hidden">Loading...</span></div>');
 			for (index in contract_address) {
 				all = all.concat(await get_nft(contract_address[index]["contract"], address));
 			}
@@ -126,13 +135,22 @@
 
 		$(document).ready(()=>{
 			$('#button-search').on('click', function(){
-				//console.log($('#input-address').val());
+				console.log($('#input-address').val());
 				if ($('#input-address').val().trim() != ""){
 					search_all_nft($('#input-address').val().trim()).then((all_cards) => {
 						$('#all_cards').html(all_cards.map(card_template).join(''));
+						echo.init();
 					});
 				}
 			});
+			const params = new URLSearchParams(window.location.search);
+			const address = params.get('address');
+			if (address != null){
+				search_all_nft(address).then((all_cards) => {
+					$('#all_cards').html(all_cards.map(card_template).join(''));
+					echo.init();
+				});
+			};
 		});
 		
 	</script>
@@ -160,7 +178,7 @@
 			<button class="btn btn-outline-secondary" type="button" id="button-search">Search</button>
 		  </div>
 		</div>
-		<div id="all_cards" class="row row-cols-auto g-1 mb-0 mt-0 px-1 pb-1"></div>
+		<div id="all_cards" class="row row-cols-auto g-1 mb-5 mt-0 px-1 pb-1 d-flex justify-content-center"></div>
 	</div>
 
 	<footer class="footer mt-auto py-3 bg-light fixed-bottom">
@@ -168,6 +186,6 @@
 		<span class="text-muted">create by ketaway@gmail.com</span>
 	  </div>
 	</footer>
-	    
+
   </body>
 </html>
