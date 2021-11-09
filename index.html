@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>BKC NFT</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1-rc.2/web3.min.js" integrity="sha512-KURAVUCRxZKDemghhiNqTnYzVPUtO3GYznBZRWRBT2GJJ5PmePAxfO7QMGCM8xUJ0QfrUYJDrtRJM4L4NOtfow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap-utilities.min.css" integrity="sha512-kRvJclW5GazdbAJPE9vvs560XNBwTBGLg4RVHZALXHFnAWQeRbQ/jGcGDHcQXiiqRld4wEFs6Kpoa6Tm/wCrtg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap-reboot.min.css" integrity="sha512-stCMej6DXfErBwD8bQrJsG2dFPHNW9y8cmccQhW0o+GeSxKzjABmIVdwOzQ5Vlw4HYoEwrECGDRQs8xF0f9ssg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap-grid.min.css" integrity="sha512-q0LpKnEKG/pAf1qi1SAyX0lCNnrlJDjAvsyaygu07x8OF4CEOpQhBnYiFW6YDUnOOcyAEiEYlV4S9vEc6akTEw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js" integrity="sha512-pax4MlgXjHEPfCwcJLQhigY7+N8rt6bVvWLFyUMuxShv170X53TRzGPmPkZmGBhk+jikR8WBM4yl7A9WMHHqvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        body {
+            /*min-height: 75rem;*/
+            padding-top: 4.5rem;
+            /* overflow:hidden; */
+            overflow-y: overlay !important; /* For scrollbar overlay on content */
+            overflow-x: hidden !important;
+        }
+        /* width */
+        ::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          /* background: #f1f1f1; */
+          background: transparent;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: rgba(136, 136, 136, 0.7);
+          border-radius: 10px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555; 
+        }
+        
+    </style>
+	<script>
+		const contract_address = [
+			{
+				"name": "Pleum VRZO (PL)",
+				"contract": "0xfb283132b1d97e3cd17c3e98f05cb6e466d68683",
+				"owner": "0xd638ef02aea07c33acbbec7eeb90263847b09849",
+				"last_blalnce": 14901
+			},
+			{
+				"name": "Bie The Ska (BIE)",
+				"contract": "0x7dac9892eb121caef5562fe9b36b1900c4a89425",
+				"owner": "0xd0f522c9ddc6e0eb611c36bec0f5101da33bde52",
+				"last_blalnce": 14901
+			},
+			{
+				"name": "Kaykai Salaider (KK)",
+				"contract": "0xab2dd323bd91401150504bf60b88f6ca0e76ca1f",
+				"owner": "0xbd69a5d0a9754e12425c8fae93808a2501f05952",
+				"last_blalnce": 17470
+			}
+		];
+        const rpc_url = 'https://rpc.bitkubchain.io';
+		const web3 = new Web3(new Web3.providers.HttpProvider(rpc_url));
+		const card_template = ({ tokenid, image, name, rarity, description }) => `
+		  <div class="col-auto text-center m-1 bg-light border rounded-3 text-truncate" style="width:200px !important; height:300px !important">
+			<p class="text-center m-1 fw-bold fs-6">${name}</p>
+			<img src="${image}" tooltip="${description}" style="max-height:200px; max-width:155px; border-radius: 16px;"/>
+			<p class="text-center m-1">ID: ${tokenid}</p>
+			<p class="text-center m-1 fw-bold">Rarity: ${rarity}</p>
+		  </div>
+		`;
+		const card_template_vdo = ({ tokenid, animation_url, name, rarity, description }) => `
+		  <div class="col-auto text-center m-1 bg-light border rounded-3" style="width:160px !important; height:300px !important">
+			<video autoplay="" loop="" playsinline="" style="max-height:200px; max-width:155px; border-radius: 16px;"><source src="${animation_url}" type="video/mp4">Your browser does not support the video tag.</video>
+			<p class="text-center">${tokenid}</p>
+			<p class="text-center mb-1 fw-bold fs-6">${name}</p>
+			<p class="text-center">${rarity}</p>
+		  </div>
+		`;
+		
+		async function get_nft(contract_address, owner_address){
+			const abi_url = 'https://bkcscan.com/api?module=contract&action=getabi&address=' + contract_address;
+			const res = await fetch(abi_url);
+			const data = await res.json();
+			const abi = await JSON.parse(data["result"]);
+			const fanstoken_nft = await new web3.eth.Contract(abi, contract_address);
+			const symbol = await fanstoken_nft.methods.symbol().call();
+			const cards = await fanstoken_nft.methods.tokenOfOwnerByPage(owner_address, 1, 50).call();
+			async function get_nft_info(tokenURI){
+				const res = await fetch(tokenURI);
+				const card_info = await res.json();
+				return card_info;
+			}
+			async function get_tokenURI(cards, fanstoken_nft){
+				let tokenURI = [];
+				for (const tokenid of cards) {
+					let token_url = await fanstoken_nft.methods.tokenURI(tokenid).call()
+					let token_info = await get_nft_info(token_url);
+					token_info["tokenid"] = tokenid;
+					token_info["data_url"] = token_url;
+					token_info["rarity"] = token_info["rarity"].split(" ").map(w => {return w[0].toUpperCase()}).join('');
+					tokenURI.push(token_info);
+				}
+				return tokenURI;
+			}
+			const tokenURI = await get_tokenURI(cards, fanstoken_nft);
+			return tokenURI;
+		}
+		async function search_all_nft(address){
+			let all = [];
+			$('#all_cards').html('');
+			for (index in contract_address) {
+				all = all.concat(await get_nft(contract_address[index]["contract"], address));
+			}
+			return all;
+		}
+
+		$(document).ready(()=>{
+			$('#button-search').on('click', function(){
+				console.log($('#input-address').val());
+				search_all_nft($('#input-address').val()).then((all_cards) => {
+					//console.log(all_cards);
+					//all_cards.forEach(element => console.log(element));
+					$('#all_cards').html(all_cards.map(card_template).join(''));
+					//console.log(all_cards.length)
+					/*for(const card of all_cards) {
+						console.log(card);
+						$('#all_cards').append( $('#card_template').html() );
+					}*/
+				});
+			});
+			/*(async () => {
+				const cards = await search_all_nft($('#input-address').val());
+				console.log(cards);
+			});*/
+			
+		});
+		
+	</script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">KS</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a class="nav-link active" href="#">FansToken NFT</a>
+              </li>
+          </div>
+        </div>
+    </nav>
+	<div class="container-fluid px-0">
+		<div class="p-1 p-md-1 mb-0 sticky-top bg-light" style="top:3em;">
+		  <h2 class="fw-bold">FansToken NFT</h2>
+		  <div class="input-group mb-3 col-xl-3">
+			<input type="text" class="form-control" id="input-address" value="0x959281eB32bE822d7969de60151DBaf84434f79f" placeholder="bitkub next wallet address" aria-label="bitkub next wallet address">
+			<button class="btn btn-outline-secondary" type="button" id="button-search">Search</button>
+		  </div>
+		</div>
+		<div id="all_cards" class="row row-cols-auto g-1 mb-0 mt-0 px-1 pb-1"></div>
+	</div>
+
+	<div id="card_template" class="invisible">
+		<div class="col" style="width:150px; height:200px">
+			<img id="card_image" src="" width="100%"/>
+			<p id="card_name" class="mb-1 fw-bold fs-6">name</p>
+		</div>
+	</div>
+  </body>
+</html>
