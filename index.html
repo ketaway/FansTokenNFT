@@ -63,102 +63,29 @@
         
     </style>
 	<script>
-		const contract_address = [
-			{
-				"name": "Pleum VRZO (PL)",
-				"contract": "0xfb283132b1d97e3cd17c3e98f05cb6e466d68683"
-			},
-			{
-				"name": "Bie The Ska (BIE)",
-				"contract": "0x7dac9892eb121caef5562fe9b36b1900c4a89425"
-			},
-			{
-				"name": "Kaykai Salaider (KK)",
-				"contract": "0xab2dd323bd91401150504bf60b88f6ca0e76ca1f"
-			}
-		];
-        const rpc_url = 'https://rpc.bitkubchain.io';
-		const web3 = new Web3(new Web3.providers.HttpProvider(rpc_url));
-		const card_template = ({ tokenid, image, name, rarity, description }) => `
+	const contract_address=[{"name":"Pleum VRZO (PL)","contract":"0xfb283132b1d97e3cd17c3e98f05cb6e466d68683","owner":"0xd638ef02aea07c33acbbec7eeb90263847b09849","last_blalnce":14901},{"name":"Bie The Ska (BIE)","contract":"0x7dac9892eb121caef5562fe9b36b1900c4a89425","owner":"0xd0f522c9ddc6e0eb611c36bec0f5101da33bde52","last_blalnce":14901},{"name":"Kaykai Salaider (KK)","contract":"0xab2dd323bd91401150504bf60b88f6ca0e76ca1f","owner":"0xbd69a5d0a9754e12425c8fae93808a2501f05952","last_blalnce":17470}];const rpc_url='https://rpc.bitkubchain.io';const web3=new Web3(new Web3.providers.HttpProvider(rpc_url));const card_template=({tokenid,image,name,rarity,description})=>`
 		  <div class="col-auto text-center m-1 bg-light border rounded-3 text-truncate" style="width:175px !important; height:300px !important">
 			<p class="text-center m-1 fw-bold fs-6">${name}</p>
 			<img src="${image}" data-echo="${image}" tooltip="${description}" style="max-height:200px; max-width:155px; border-radius: 16px;"/>
 			<p class="text-center m-1">ID: ${tokenid}</p>
 			<p class="text-center m-1 fw-bold">Rarity: ${rarity}</p>
 		  </div>
-		`;
-		const card_template_vdo = ({ tokenid, animation_url, name, rarity, description }) => `
+		`;const card_template_vdo=({tokenid,animation_url,name,rarity,description})=>`
 		  <div class="col-auto text-center m-1 bg-light border rounded-3" style="width:160px !important; height:300px !important">
 			<video autoplay="" loop="" playsinline="" style="max-height:200px; max-width:155px; border-radius: 16px;"><source src="${animation_url}" type="video/mp4">Your browser does not support the video tag.</video>
 			<p class="text-center">${tokenid}</p>
 			<p class="text-center mb-1 fw-bold fs-6">${name}</p>
 			<p class="text-center">${rarity}</p>
 		  </div>
-		`;
-		
-		async function get_nft(contract_address, owner_address){
-			const abi_url = 'https://bkcscan.com/api?module=contract&action=getabi&address=' + contract_address;
-			let res, data, abi, fanstoken_nft, cards;
-			
-			async function get_nft_info(tokenURI){
-				const res = await fetch(tokenURI);
-				const card_info = await res.json();
-				return card_info;
-			}
-			async function get_tokenURI(cards, fanstoken_nft){
-				let tokenURI = [];
-				for (const tokenid of cards) {
-					let token_url = await fanstoken_nft.methods.tokenURI(tokenid).call()
-					let token_info = await get_nft_info(token_url);
-					token_info["tokenid"] = tokenid;
-					token_info["data_url"] = token_url;
-					token_info["rarity"] = token_info["rarity"].split(" ").map(w => {return w[0].toUpperCase()}).join('');
-					tokenURI.push(token_info);
-				}
-				return tokenURI;
-			}
-			try {
-				res = await fetch(abi_url);
-				data = await res.json();
-				abi = await JSON.parse(data["result"]);
-				fanstoken_nft = await new web3.eth.Contract(abi, contract_address);
-				cards = await fanstoken_nft.methods.tokenOfOwnerByPage(owner_address, 1, 100).call();
-				const tokenURI = await get_tokenURI(cards, fanstoken_nft);
-				return tokenURI;
-			}
-			catch (e) {
-				console.log(e)
-				$('#all_cards').html('Error on loading please try again later.');
-			}
-		}
-		async function search_all_nft(address){
-			let all = [];
-			$('#all_cards').html('<div class="spinner-border mt-5" role="status" style="width:40px; height:40px"><span class="visually-hidden">Loading...</span></div>');
-			for (index in contract_address) {
-				all = all.concat(await get_nft(contract_address[index]["contract"], address));
-			}
-			return all;
-		}
-
-		$(document).ready(()=>{
-			$('#button-search').on('click', function(){
-				console.log($('#input-address').val());
-				if ($('#input-address').val().trim() != ""){
-					search_all_nft($('#input-address').val().trim()).then((all_cards) => {
-						$('#all_cards').html(all_cards.map(card_template).join(''));
-						echo.init();
-					});
-				}
-			});
-			const params = new URLSearchParams(window.location.search);
-			const address = params.get('address');
-			if (address != null){
-				search_all_nft(address).then((all_cards) => {
-					$('#all_cards').html(all_cards.map(card_template).join(''));
-					echo.init();
-				});
-			};
-		});
+		`;async function get_nft(contract_address,owner_address){const abi_url='https://bkcscan.com/api?module=contract&action=getabi&address='+contract_address;let res,data,abi,fanstoken_nft,symbol,cards,balance;async function get_nft_info(tokenURI){const res=await fetch(tokenURI);const card_info=await res.json();return card_info}
+async function get_tokenURI(cards,fanstoken_nft){let tokenURI=[];for(const tokenid of cards){let token_url=await fanstoken_nft.methods.tokenURI(tokenid).call()
+let token_info=await get_nft_info(token_url);token_info.tokenid=tokenid;token_info.data_url=token_url;token_info.rarity=token_info.rarity.split(" ").map(w=>{return w[0].toUpperCase()}).join('');tokenURI.push(token_info)}
+return tokenURI}
+try{res=await fetch(abi_url);data=await res.json();abi=await JSON.parse(data.result);fanstoken_nft=await new web3.eth.Contract(abi,contract_address);cards=await fanstoken_nft.methods.tokenOfOwnerByPage(owner_address,1,100).call();const tokenURI=await get_tokenURI(cards,fanstoken_nft);return tokenURI}catch(e){console.log(e)
+$('#all_cards').html('Error on loading please try again later.')}}
+async function search_all_nft(address){let all=[];$('#all_cards').html('<div class="spinner-border mt-5" role="status" style="width:40px; height:40px"><span class="visually-hidden">Loading...</span></div>');for(index in contract_address){all=all.concat(await get_nft(contract_address[index].contract,address))}
+return all}
+$(document).ready(()=>{$('#button-search').on('click',function(){console.log($('#input-address').val());if($('#input-address').val().trim()!=""){search_all_nft($('#input-address').val().trim()).then((all_cards)=>{$('#all_cards').html(all_cards.map(card_template).join(''));echo.init()})}});const params=new URLSearchParams(window.location.search);const address=params.get('address');if(address!=null){search_all_nft(address).then((all_cards)=>{$('#all_cards').html(all_cards.map(card_template).join(''));echo.init()})}})
 		
 	</script>
   </head>
