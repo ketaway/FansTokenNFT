@@ -115,7 +115,7 @@
 				data = await res.json();
 				abi = await JSON.parse(data["result"]);
 				fanstoken_nft = await new web3.eth.Contract(abi, contract_address);
-				cards = await fanstoken_nft.methods.tokenOfOwnerByPage(owner_address, 1, 50).call();
+				cards = await fanstoken_nft.methods.tokenOfOwnerByPage(owner_address, 1, 100).call();
 				const tokenURI = await get_tokenURI(cards, fanstoken_nft);
 				return tokenURI;
 			}
