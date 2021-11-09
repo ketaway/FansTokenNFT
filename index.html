@@ -126,23 +126,13 @@
 
 		$(document).ready(()=>{
 			$('#button-search').on('click', function(){
-				console.log($('#input-address').val());
-				search_all_nft($('#input-address').val()).then((all_cards) => {
-					//console.log(all_cards);
-					//all_cards.forEach(element => console.log(element));
-					$('#all_cards').html(all_cards.map(card_template).join(''));
-					//console.log(all_cards.length)
-					/*for(const card of all_cards) {
-						console.log(card);
-						$('#all_cards').append( $('#card_template').html() );
-					}*/
-				});
+				//console.log($('#input-address').val());
+				if ($('#input-address').val().trim() != ""){
+					search_all_nft($('#input-address').val().trim()).then((all_cards) => {
+						$('#all_cards').html(all_cards.map(card_template).join(''));
+					});
+				}
 			});
-			/*(async () => {
-				const cards = await search_all_nft($('#input-address').val());
-				console.log(cards);
-			});*/
-			
 		});
 		
 	</script>
@@ -166,7 +156,7 @@
 		<div class="p-1 p-md-1 mb-0 sticky-top bg-light" style="top:3em;">
 		  <h2 class="fw-bold">FansToken NFT</h2>
 		  <div class="input-group mb-3 col-xl-3">
-			<input type="text" class="form-control" id="input-address" value="" placeholder="bitkub next wallet address" aria-label="bitkub next wallet address">
+			<input type="text" class="form-control" id="input-address" value="0x959281eB32bE822d7969de60151DBaf84434f79f" placeholder="bitkub next wallet address" aria-label="bitkub next wallet address">
 			<button class="btn btn-outline-secondary" type="button" id="button-search">Search</button>
 		  </div>
 		</div>
