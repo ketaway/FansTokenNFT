@@ -63,30 +63,7 @@
         
     </style>
 	<script>
-	const contract_address=[{"name":"Pleum VRZO (PL)","contract":"0xfb283132b1d97e3cd17c3e98f05cb6e466d68683","owner":"0xd638ef02aea07c33acbbec7eeb90263847b09849","last_blalnce":14901},{"name":"Bie The Ska (BIE)","contract":"0x7dac9892eb121caef5562fe9b36b1900c4a89425","owner":"0xd0f522c9ddc6e0eb611c36bec0f5101da33bde52","last_blalnce":14901},{"name":"Kaykai Salaider (KK)","contract":"0xab2dd323bd91401150504bf60b88f6ca0e76ca1f","owner":"0xbd69a5d0a9754e12425c8fae93808a2501f05952","last_blalnce":17470}];const rpc_url='https://rpc.bitkubchain.io';const web3=new Web3(new Web3.providers.HttpProvider(rpc_url));const card_template=({tokenid,image,name,rarity,description})=>`
-		  <div class="col-auto text-center m-1 bg-light border rounded-3 text-truncate" style="width:175px !important; height:300px !important">
-			<p class="text-center m-1 fw-bold fs-6">${name}</p>
-			<img src="${image}" data-echo="${image}" tooltip="${description}" style="max-height:200px; max-width:155px; border-radius: 16px;"/>
-			<p class="text-center m-1">ID: ${tokenid}</p>
-			<p class="text-center m-1 fw-bold">Rarity: ${rarity}</p>
-		  </div>
-		`;const card_template_vdo=({tokenid,animation_url,name,rarity,description})=>`
-		  <div class="col-auto text-center m-1 bg-light border rounded-3" style="width:160px !important; height:300px !important">
-			<video autoplay="" loop="" playsinline="" style="max-height:200px; max-width:155px; border-radius: 16px;"><source src="${animation_url}" type="video/mp4">Your browser does not support the video tag.</video>
-			<p class="text-center">${tokenid}</p>
-			<p class="text-center mb-1 fw-bold fs-6">${name}</p>
-			<p class="text-center">${rarity}</p>
-		  </div>
-		`;async function get_nft(contract_address,owner_address){const abi_url='https://bkcscan.com/api?module=contract&action=getabi&address='+contract_address;let res,data,abi,fanstoken_nft,symbol,cards,balance;async function get_nft_info(tokenURI){const res=await fetch(tokenURI);const card_info=await res.json();return card_info}
-async function get_tokenURI(cards,fanstoken_nft){let tokenURI=[];for(const tokenid of cards){let token_url=await fanstoken_nft.methods.tokenURI(tokenid).call()
-let token_info=await get_nft_info(token_url);token_info.tokenid=tokenid;token_info.data_url=token_url;token_info.rarity=token_info.rarity.split(" ").map(w=>{return w[0].toUpperCase()}).join('');tokenURI.push(token_info)}
-return tokenURI}
-try{res=await fetch(abi_url);data=await res.json();abi=await JSON.parse(data.result);fanstoken_nft=await new web3.eth.Contract(abi,contract_address);cards=await fanstoken_nft.methods.tokenOfOwnerByPage(owner_address,1,100).call();const tokenURI=await get_tokenURI(cards,fanstoken_nft);return tokenURI}catch(e){console.log(e)
-$('#all_cards').html('Error on loading please try again later.')}}
-async function search_all_nft(address){let all=[];$('#all_cards').html('<div class="spinner-border mt-5" role="status" style="width:40px; height:40px"><span class="visually-hidden">Loading...</span></div>');for(index in contract_address){all=all.concat(await get_nft(contract_address[index].contract,address))}
-return all}
-$(document).ready(()=>{$('#button-search').on('click',function(){console.log($('#input-address').val());if($('#input-address').val().trim()!=""){search_all_nft($('#input-address').val().trim()).then((all_cards)=>{$('#all_cards').html(all_cards.map(card_template).join(''));echo.init()})}});const params=new URLSearchParams(window.location.search);const address=params.get('address');if(address!=null){search_all_nft(address).then((all_cards)=>{$('#all_cards').html(all_cards.map(card_template).join(''));echo.init()})}})
-		
+	const contract_address=[{name:"Pleum VRZO (PL)",symbol:"PL",contract:"0xfb283132b1d97e3cd17c3e98f05cb6e466d68683"},{name:"Bie The Ska (BIE)",symbol:"BIE",contract:"0x7dac9892eb121caef5562fe9b36b1900c4a89425"},{name:"Kaykai Salaider (KK)",symbol:"KK",contract:"0xab2dd323bd91401150504bf60b88f6ca0e76ca1f"}],rpc_url="https://rpc.bitkubchain.io",web3=new Web3(new Web3.providers.HttpProvider(rpc_url)),card_template=({tokenid:t,image:e,name:a,rarity:n,description:o,symbol:i})=>`\n\t\t  <div id="${i}" class="col-auto text-center m-1 bg-light border rounded-3 text-truncate" style="width:175px !important; height:300px !important">\n\t\t\t<p class="text-center m-1 fw-bold fs-6">${a}</p>\n\t\t\t<img src="${e}" data-echo="${e}" tooltip="${o}" style="max-height:200px; max-width:155px; border-radius: 16px;"/>\n\t\t\t<p class="text-center m-1">ID: ${t}</p>\n\t\t\t<p class="text-center m-1 fw-bold">Rarity: ${n}</p>\n\t\t  </div>\n\t\t`,card_template_vdo=({tokenid:t,animation_url:e,name:a,rarity:n,description:o})=>`\n\t\t  <div class="col-auto text-center m-1 bg-light border rounded-3" style="width:160px !important; height:300px !important">\n\t\t\t<video autoplay="" loop="" playsinline="" style="max-height:200px; max-width:155px; border-radius: 16px;"><source src="${e}" type="video/mp4">Your browser does not support the video tag.</video>\n\t\t\t<p class="text-center">${t}</p>\n\t\t\t<p class="text-center mb-1 fw-bold fs-6">${a}</p>\n\t\t\t<p class="text-center">${n}</p>\n\t\t  </div>\n\t\t`;async function get_nft(t,e){const a="https://bkcscan.com/api?module=contract&action=getabi&address="+t.contract;let n,o,i,c,r,s;async function d(t){const e=await fetch(t);return await e.json()}r=t.symbol;try{return n=await fetch(a),o=await n.json(),i=await JSON.parse(o.result),c=await new web3.eth.Contract(i,t.contract),s=await c.methods.tokenOfOwnerByPage(e,1,100).call(),await async function(t,e){let a=[];for(const n of t){let t=await e.methods.tokenURI(n).call(),o=await d(t);o.tokenid=n,o.data_url=t,o.symbol=r,o.rarity=o.rarity.split(" ").map(t=>t[0].toUpperCase()).join(""),a.push(o)}return a}(s,c)}catch(t){console.log(t),$("#all_cards").html('<p class="mt-5">Error on loading please try again later.</p>')}}async function search_all_nft(t){let e=[];for(index in $("#all_cards").html('<div class="spinner-border mt-5" role="status" style="width:40px; height:40px"><span class="visually-hidden">Loading...</span></div>'),contract_address)$("#symbol_"+contract_address[index].symbol.toLowerCase()).prop("checked")&&(e=e.concat(await get_nft(contract_address[index],t)));return e}$(document).ready(()=>{$("#button-search").on("click",function(){console.log($("#input-address").val()),""!=$("#input-address").val().trim()&&search_all_nft($("#input-address").val().trim()).then(t=>{$("#all_cards").html(t.map(card_template).join("")),echo.init()})});const t=new URLSearchParams(window.location.search),e=t.get("address"),a=t.get("pl"),n=t.get("bie"),o=t.get("kk");null!=a&&$("#symbol_pl").prop("checked",1==a),null!=n&&$("#symbol_bie").prop("checked",1==n),null!=o&&$("#symbol_kk").prop("checked",1==o),null!=e&&($("#input-address").val(e),search_all_nft(e).then(t=>{$("#all_cards").html(t.map(card_template).join("")),echo.init()})),$("#symbol_pl").on("change",function(){$(this).is(":checked")?$('div[id="PL"]').show():$('div[id="PL"]').hide()}),$("#symbol_bie").on("change",function(){$(this).is(":checked")?$('div[id="BIE"]').show():$('div[id="BIE"]').hide()}),$("#symbol_kk").on("change",()=>{$(this).is(":checked")?$('div[id="KK"]').show():$('div[id="KK"]').hide()}),$("#button-copy-link").on("click",()=>{""!=$("#input-address").val().trim()&&($text=window.location.href.split("?")[0],$text+="?address="+$("#input-address").val().trim(),$text+="&pl="+($("#symbol_pl").prop("checked")?"1":"0"),$text+="&bie="+($("#symbol_bie").prop("checked")?"1":"0"),$text+="&kk="+($("#symbol_kk").prop("checked")?"1":"0"),navigator.clipboard.writeText($text))})});	
 	</script>
   </head>
   <body class="d-flex flex-column h-100">
@@ -104,22 +81,47 @@ $(document).ready(()=>{$('#button-search').on('click',function(){console.log($('
           </div>
         </div>
     </nav>
-	<div class="container-fluid px-0">
-		<div class="p-1 p-md-1 mb-0 sticky-top bg-light" style="top:3em;">
-		  <h2 class="fw-bold">FansToken NFT</h2>
-		  <div class="input-group mb-3 col-xl-3">
-			<input type="text" class="form-control" id="input-address" value="" placeholder="bitkub next wallet address" aria-label="bitkub next wallet address">
-			<button class="btn btn-outline-secondary" type="button" id="button-search">Search</button>
-		  </div>
+	<div class="container-fluid px-1">
+		<div class="p-1 p-md-1 mb-0 sticky-top bg-light" style="top:3.5em;">
+			<div class="row align-items-center">
+				<div class="mb-1 col-xl-auto d-xl-flex align-items-center">
+					<span class="fs-5 fw-bold">FansToken NFT</span>
+					<div class="input-group mx-2 col-xl-auto">
+						<input type="text" class="form-control" id="input-address" value="" placeholder="bitkub next wallet address" aria-label="bitkub next wallet address">
+						<button class="btn btn-outline-secondary" type="button" id="button-search">Search</button>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="" id="symbol_pl" checked>
+						<label class="form-check-label" for="symbol_pl">
+						PL
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="" id="symbol_bie" checked>
+						<label class="form-check-label" for="symbol_bie">
+						BIE
+						</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="checkbox" value="" id="symbol_kk" checked>
+						<label class="form-check-label" for="symbol_kk">
+						KK
+						</label>
+					</div>
+					<button class="btn btn-outline-secondary" type="button" id="button-copy-link">Copy link</button>
+				</div>
+			</div>
+		  
 		</div>
-		<div id="all_cards" class="row row-cols-auto g-1 mb-5 mt-0 px-1 pb-1 d-flex justify-content-center"></div>
-	</div>
 
-	<footer class="footer mt-auto py-3 bg-light fixed-bottom">
-	  <div class="container">
-		<span class="text-muted">Copyright © 2021 by Ketaway</span>
-	  </div>
-	</footer>
+		<div id="all_cards" class="row row-cols-auto g-1 mb-5 mt-0 px-1 pb-1 d-flex justify-content-center"></div>
+
+		<footer class="footer mt-auto py-3 bg-light fixed-bottom">
+			<div class="container">
+				<span class="text-muted">Copyright © 2021 by Ketaway</span>
+			</div>
+		</footer>    
+	</div>
 
   </body>
 </html>
