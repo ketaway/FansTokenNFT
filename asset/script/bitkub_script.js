@@ -454,7 +454,7 @@
 			}
 			if (Web3.utils.isAddress(address)){
 				$('#input-address').val(address);
-				get_fanstoken_nft(address);
+				get_fanstoken_nft(address, ! Web3.utils.isAddress(address));
 			};
 			$('#symbol_pl').on('change', function(){
 				if($(this).is(':checked')) {
