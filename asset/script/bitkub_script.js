@@ -452,7 +452,7 @@
 			if (c != null){
 				$('#cards_collection').prop("checked", c==1?true:false);
 			}
-			if (Web3.utils.isAddress(address)){
+			if (address != null){
 				$('#input-address').val(address);
 				get_fanstoken_nft(address, ! Web3.utils.isAddress(address));
 			};
