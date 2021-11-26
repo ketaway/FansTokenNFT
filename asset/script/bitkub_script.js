@@ -454,8 +454,9 @@
 			}
 			if (address != null){
 				$('#input-address').val(address);
+				reset_state();
 				get_fanstoken_nft(address, ! Web3.utils.isAddress(address));
-			};
+			}
 			$('#symbol_pl').on('change', function(){
 				if($(this).is(':checked')) {
 					$('div[id="PL"]').show("fast");
@@ -544,20 +545,13 @@
 					$("#notify").toast('show');
 				}
 			});
-			$('#cards_groupby_collection').on('change', function(){
-				reset_state();
-				address = $('#input-address').val().trim()
-				if (Web3.utils.isAddress(address)){
-					get_fanstoken_nft(address);
-				}
-			});
 
 			$(window).scroll(function() {
 				if($(window).scrollTop() > $(window).height()/2 && $(window).scrollTop() + $(window).height() > $(document).height() - 200) {
 					if(ready){
 						if(more_cards){
 							if (address != ""){
-								get_fanstoken_nft(address);
+								get_fanstoken_nft(address, ! Web3.utils.isAddress(address));
 							}
 						}
 					}
