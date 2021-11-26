@@ -47,6 +47,9 @@
               <li class="nav-item">
                 <a class="nav-link active" href="#">FansToken NFT</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#nft_card_status">Check Card Status</a>
+              </li>
           </div>
         </div>
     </nav>
@@ -161,15 +164,43 @@
 	  </div>
 	</div>
 	    
-    <div class="toast-container position-absolute top-0 p-2 pt-5 mt-5 d-flex justify-content-center align-items-center w-100" style="z-index: 1100 !important;">
-        <div id="notify" class="toast align-items-center mt-5" role="alert" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-animation="true" data-bs-delay="1000">
+	<div class="toast-container position-absolute top-0 p-2 pt-5 mt-5 d-flex justify-content-center align-items-center w-100" style="z-index: 1100 !important;">
+	  <div id="notify" class="toast align-items-center mt-5" role="alert" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-animation="true" data-bs-delay="1000">
 		  <div class="d-flex">
 			<div class="toast-body">
 			Copy link.
-		   </div>
+			</div>
 			<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 		  </div>
-		</div>
-    </div>
+	  </div>
+	</div>
+	    
+	<div id="nft_card_status" class="modal fade" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="card_infoLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-scrollable modal-fullscreen-md-dow modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+		<h5 class="modal-title" id="exampleModalLabel">Check Cards Status</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" style="min-height:800px">
+			<div class="row">
+				<div class="input-group">
+				  <input id="check_cards_status_input" type="text" class="form-control" placeholder="tokenId" aria-label="tokenId">
+				  <button id="btn_check_cards_status" type="button" class="btn btn-outline-secondary"><i class="bi bi-search"></i></button>
+				  <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+					<span class="visually-hidden">Toggle Dropdown</span>
+				  </button>
+				  <ul class="dropdown-menu dropdown-menu-end">
+					<li id="check_cards_menu"><hr class="dropdown-divider"></li>
+				  </ul>
+				</div>
+			</div>
+		<div id="nft_card_status_container" class=" row row-cols-auto g-0 mt-0 px-1 justify-content-center"></div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	    
+	    
   </body>
 </html>
