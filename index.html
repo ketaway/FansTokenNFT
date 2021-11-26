@@ -125,7 +125,19 @@
 				</div>
 			</div>
 			<div class="col">
-				<div id="all_cards" class="row row-cols-auto g-0 mb-5 pb-2 mt-0 px-1 justify-content-center"></div>
+				<div id="all_cards" class="row row-cols-auto g-0 mb-5 pb-2 mt-0 px-1 justify-content-center">
+					<span class="pt-5 mt-5">
+						<ul class="list-unstyled">
+						  <li>dApp for NFTs on bitkub chain.</li>
+						  <li>use bitkub next wallet address or tokenid.
+							<ul>
+							  <li>for bitkub next wallet address use 0x....</li>
+							  <li>for tokenid use id (number) of nft can search more than one by use comma (,) example 1,2,3</li>
+							</ul>
+						  </li>
+						</ul>
+					</span>
+				</div>
 			</div>
 		</div>
 
@@ -144,5 +156,16 @@
 		<div id="filter" class=""></div>
 	  </div>
 	</div>
+	    
+    <div class="toast-container position-absolute top-0 p-2 pt-5 mt-5 d-flex justify-content-center align-items-center w-100" style="z-index: 1100 !important;">
+        <div id="notify" class="toast align-items-center mt-5" role="alert" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-animation="true" data-bs-delay="1000">
+		  <div class="d-flex">
+			<div class="toast-body">
+			Copy link.
+		   </div>
+			<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+		  </div>
+		</div>
+    </div>
   </body>
 </html>
