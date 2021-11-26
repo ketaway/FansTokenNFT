@@ -25,6 +25,12 @@
 		width:44px !important;
 		height:44px !important;
 	}
+	.card_used {
+		opacity:0.6;
+	}
+	._ {
+		display: none !important;
+	}
 	.N, .CO {
 		background: linear-gradient(to bottom, #d3d3d3 0%, #838383 100%);
 	}
