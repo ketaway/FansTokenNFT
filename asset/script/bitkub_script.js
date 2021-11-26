@@ -375,7 +375,6 @@
 						}
 					}
 				}else{
-					console.log(all_cards);
 					$('#all_cards').append(all_cards.map(card_template).join(''));
 				}
 				if($('#cards_name').prop("checked")) {
