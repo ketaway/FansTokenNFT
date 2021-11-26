@@ -618,7 +618,6 @@
 					const contract = $('input[name="check_cards_status"]:checked').val();
 					const tokenIds = tokenId.split(",").map(id =>{ return contract + "_" + id.replace(/^\s+|\s+$/gm,'')});
 					resp = await graph_get_nft_status(tokenIds.join('","'));
-					console.log(resp);
 				}
 				const card_template_xx = ({ nft }) => `
 				  <div id="s_${nft.tokenId}" class="col-auto text-center pt-1 pb-1 m-1 bg-light border rounded-3 text-truncate nft_cards">
