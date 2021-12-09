@@ -220,6 +220,9 @@
 						}else if(symbol == "MUT-NFT"){
 							token_info["image"] = token_info["image"].replace("/ipfs/", "/cdn-cgi/image/width=150,quality=60/ipfs/");
 							token_info["rarity"] = token_info["rarity"];
+							if(token_info["rarity"].length > 3){
+								token_info["rarity"] = token_info["rarity"].split(" ").map(w => {return w[0].toUpperCase()}).join('');
+							}
 						}else{
 							if(token_info["rarity"].length > 3){
 								token_info["rarity"] = token_info["rarity"].split(" ").map(w => {return w[0].toUpperCase()}).join('');
