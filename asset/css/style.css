@@ -49,6 +49,11 @@
 	.USR, .L {
 		background: linear-gradient(to bottom, #FFD700 0%, #DAA520 100%);
 	}
+	.USSR {
+		background: linear-gradient(to bottom, #fea601 0%, #b3881a 100%);
+		font-size: 1rem !important;
+		padding-top: 0.5rem !important;
+	}
 	.form-check-input:checked {
 		background-color: #6c757d;
 		border-color: #6c757d;
