@@ -91,24 +91,14 @@
 			  }]
 			};
 		const web3 = new Web3(new Web3.providers.HttpProvider(rpc_url));
-		const card_template = ({ tokenid, image, name, rarity, description, symbol, attribute_collection, attribute_card_number, hashtags }) => `
+		const card_template = ({ tokenid, image, name, rarity, rarity_text, description, symbol, attribute_collection, attribute_card_number, hashtags }) => `
 		  <div id="${symbol}" class="col-auto text-center pt-1 pb-1 m-1 bg-light border rounded-3 text-truncate nft_cards" data-rarity="${rarity}" data-hashtags="${hashtags}" data-collection="${attribute_collection}" data-card_number="${attribute_card_number}">
-			<p id="card_name" class="text-center m-1 mb-0 fw-bold fs-6">${name}</p>
-			<div class="position-relative py-1" style="height:203px; width:163px;">
+			<div class="position-relative py-1" style="max-height:203px; max-width:163px;">
 				<img class="px-1" src="${image}" data-echo="${image}" tooltip="${description}" style="max-height:200px; max-width:155px; border-radius: 18px;"/>
-				<span id="card_rarity" class="position-absolute bottom-0 end-0 me-1 fs-5 pt-1 fw-bold ${rarity} text-white border border-3 rounded-circle rarity">${rarity}</span>
+				<span id="card_rarity" class="position-absolute bottom-0 end-0 me-1 fs-5 pt-1 fw-bold ${rarity} text-white border border-3 rounded-circle rarity" title="${rarity_text}">${rarity}</span>
 				<span id="card_collection" class="position-absolute bottom-0 start-0 me-1 fs-5 pt-1 fw-bold ${rarity} text-white border border-3 rounded-circle rarity">${attribute_collection}:${attribute_card_number}</span>
 			</div>
-			<p id="card_id" class="text-center mb-0 pb-0 fw-bold">${tokenid}</p>
-		  </div>
-		`;
-		const card_template1 = ({ tokenid, image, name, rarity, description, symbol }) => `
-		  <div id="${symbol}" class="col-auto text-center p-0 m-0 bg-light border rounded-3 text-truncate nft_cards">
-			<p id="card_name" class="text-center m-1 mb-0 fw-bold fs-6">${name}</p>
-			<div class="position-relative py-1" style="height:203px; width:163px;">
-				<img class="px-1" src="${image}" data-echo="${image}" tooltip="${description}" style="max-height:200px; max-width:155px; border-radius: 18px;"/>
-				<span id="card_rarity" class="position-absolute bottom-0 end-0 me-1 fs-5 pt-1 fw-bold bg-secondary bg-gradient text-white border border-4 rounded-circle rarity">${rarity}</span>
-			</div>
+			<p id="card_name" class="text-center m-1 mb-0 fw-bold lh-1 text-wrap">${name}</p>
 			<p id="card_id" class="text-center mb-0 pb-0 fw-bold">${tokenid}</p>
 		  </div>
 		`;
@@ -200,6 +190,7 @@
 								token_info["attribute_name"] = attr["value"];
 							}else if(attr["trait_type"] == "Rarity"){
 								token_info["rarity"] = attr["value"];
+								token_info["rarity_text"] = attr["value"];
 							}else if(attr["trait_type"] == "Type"){
 								token_info["type"] = attr["value"];
 							}else if(attr["trait_type"] == "Class"){
@@ -213,6 +204,10 @@
 						}
 						if(!("rarity" in token_info)){
 							token_info["rarity"] = "_";
+							token_info["rarity_text"] = "";
+						}
+						if(!("rarity_text" in token_info)){
+							token_info["rarity_text"] = token_info["rarity"];
 						}
 						hashtags[symbol] = [...new Set([...hashtags[symbol] ,...token_info["hashtags"]])];
 						if(symbol == "MM-NFT"){
