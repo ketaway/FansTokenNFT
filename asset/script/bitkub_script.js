@@ -449,7 +449,7 @@
 			});
 		}
 		async function graph_get_nft_status(tokenIds) {
-			const graphql_url = "https://graphql-fans.bitkubnft.io/subgraphs/name/NftMarketPlace/v3";
+			const graphql_url = "https://graphql-fans.bitkubnft.io/subgraphs/name/NftMarketPlace/v4";
 			const query_tokenId = {
 				"variables": {},
 				"query": "fragment TradeEntityFields on TradeEntity {\n  amount\n  createdTime\n  currency {\n    id\n    symbol\n    decimals\n    __typename\n  }\n  id\n  tokenAddress\n  tokenId\n  owner\n  nft {\n    createdTime\n    creator\n    id\n    imageThumbnailUrl\n    imageUrl\n    kapUri\n    name\n    tokenId\n    tokenUri\n    totalSupply\n    type\n    __typename\n  }\n  nftType\n  price\n  startTime\n  status\n  updatedTime\n  __typename\n}\n\nfragment NftEntityFields on NftEntity {\n  assetUri\n  contract\n  createdTime\n  creator\n  description\n  id\n  imageThumbnailUrl\n  imageUrl\n  kapUri\n  name\n  price\n  tokenId\n  tokenUri\n  totalSupply\n  trade {\n    ...TradeEntityFields\n    __typename\n  }\n  type\n  updatedTime\n  media\n  isStamp\n  typeId\n  attributes {\n    traitType\n    value\n    __typename\n  }\n  __typename\n}\n\nfragment OwnershipEntityFields on OwnershipEntity {\n  amount\n  id\n  nft {\n    ...NftEntityFields\n    __typename\n  }\n  owner\n  __typename\n}\n\n{\n  ownershipEntities(\n    where: { nft_in: [\"" +  tokenIds + "\"]}\n  ) {\n    ...OwnershipEntityFields\n    __typename\n  }\n}\n"
