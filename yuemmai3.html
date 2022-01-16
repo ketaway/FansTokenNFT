@@ -42,7 +42,7 @@
 		for(const iframe of $('iframe')){
 			$(iframe).attr( 'src', $(iframe).attr( 'src' ));
 		}
-		setTimeout('refresh()', 5000);
+		setTimeout('refresh()', parseInt($('#time').val()) * 1000);
 	}
 	function create_app(){
 		$('#app').html("");
@@ -66,7 +66,9 @@
 	});
 	
   </script>
-  <textarea id="mobile_phones" rows="5" cols="800" style="width:100%">0935394477, 0611032958, 0614480807, 0909144523, 0872482922, 0939454926, 0613045023</textarea><input type="button" id="BT" value="RUN" /> <br/>
+  <textarea id="mobile_phones" rows="5" cols="800" style="width:100%">0935394477, 0611032958, 0614480807, 0909144523, 0872482922, 0939454926, 0613045023</textarea>
+  <input type="button" id="BT" value="RUN" /> 
+  <input type="text" id="time" value="5" /><br/>
   <div id="app"></div>
  </body>
 </html>
