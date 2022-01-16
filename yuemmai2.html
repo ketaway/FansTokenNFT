@@ -40,7 +40,7 @@
 	function refresh() {
 		console.log("refresh");
 		for(const iframe of $('iframe')){
-			$(iframe).attr( 'src', $(iframe).attr( 'src' ));
+			setTimeout(() => { $(iframe).attr( 'src', $(iframe).attr( 'src' )); }, Math.floor(Math.random() * 3001));
 		}
 		setTimeout('refresh()', (parseInt($('#time').val()) * 1000) + Math.floor(Math.random() * 2001));
 	}
@@ -68,7 +68,7 @@
   </script>
   <textarea id="mobile_phones" rows="5" cols="800" style="width:100%">0630952097, 0961943566, 0979583033, 0824774936, 0653562591, 0959629717, 0891441979, 0856451032, 0858485574, 0927373056, 0946391414, 0815932882, 0891842086, 0910307595, 0637538228, 0851865562, 0983010486, 0858036101, 0972786122, 0904722201, 0652276173, 0864953626, 0820733698, 0613753265, 0801644151, 0630736768, 0633131344, 0829312352, 0958967529, 0872482922, 0845312100, 0937146642, 0818772691, 0937480743, 0815932882, 0959874460, 0624974398, 0960694855, 0971095279, 0885474939, 0843866622, 0864947785, 0834536498, 0983638533, 0950569108, 0929642635, 0868993132, 0972283980, 0621245881, 0621245881</textarea>
   <input type="button" id="BT" value="RUN" /> 
-  <input type="text" id="time" value="30" /><br/>
+  <input type="text" id="time" value="50" /><br/>
   <div id="app"></div>
  </body>
 </html>
