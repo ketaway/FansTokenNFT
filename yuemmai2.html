@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>ยืมมั้ย</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+  <style>
+.holder {
+  width: 350px;
+  height: 55px;
+  position: relative;
+  display: inline-block;
+}
+
+.frame {
+  width: 100%;
+  height: 100%;
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  background-color: #ffffff;
+  text-align: right;
+  font-size: 14px;
+}
+  </style>
+ </head>
+ <body>
+  
+  <script>
+
+	function refresh() {
+		console.log("refresh");
+		for(const iframe of $('iframe')){
+			$(iframe).attr( 'src', $(iframe).attr( 'src' ));
+		}
+		setTimeout('refresh()', 5000);
+	}
+	function create_app(){
+		$('#app').html("");
+		for(const phone of $('#mobile_phones').val().split(",")){
+			let frame = '<div class="holder"><iframe class="frame" src="https://cds-api.satosheep.tech/users/get-airdrop?phoneNumber=' + phone.trim() + '" height="55" width="350" scrolling="no" frameBorder="0"></iframe><div class="bar">' + phone.trim() + '</div></div>';
+			//let frame = '<iframe src="https://cds-api.satosheep.tech/users/get-airdrop?phoneNumber=' + phone + '" height="55" width="350" scrolling="no" scrolling="no" frameBorder="0"></iframe>'
+			$('#app').append(frame);
+		}
+	}
+
+	function run(){
+		$('#app').html("");
+	}
+
+  	$(document).ready(function(){
+		create_app();
+		refresh();
+		$('#BT').on('click', function(){
+			create_app();
+		});
+	});
+	
+  </script>
+  <textarea id="mobile_phones" rows="5" cols="800" style="width:100%">0645642247, 0997633101, 0813529688, 0644697718, 0630952097, 0961943566, 0979583033, 0824774936, 0653562591, 0959629717, 0891441979, 0856451032, 0858485574, 0927373056, 0946391414, 0815932882, 0891842086, 0910307595, 0637538228, 0851865562, 0983010486, 0858036101, 0972786122, 0904722201, 0652276173, 0864953626, 0820733698, 0613753265, 0801644151, 0630736768, 0633131344, 0829312352, 0958967529, 0872482922, 0845312100, 0937146642, 0818772691, 0937480743, 0815932882, 0959874460, 0624974398, 0960694855, 0971095279, 0885474939, 0843866622, 0864947785</textarea><input type="button" id="BT" value="RUN" /> <br/>
+  <div id="app"></div>
+ </body>
+</html>
