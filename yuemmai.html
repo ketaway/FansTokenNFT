@@ -41,6 +41,7 @@
 		console.log("refresh");
 		for(const iframe of $('iframe')){
 			$(iframe).attr( 'src', $(iframe).attr( 'src' ));
+			setTimeout(() => { console.log($(iframe).attr( 'src' )); }, Math.floor(Math.random() * 2001));
 		}
 		setTimeout('refresh()', (parseInt($('#time').val()) * 1000) + Math.floor(Math.random() * 2001));
 	}
