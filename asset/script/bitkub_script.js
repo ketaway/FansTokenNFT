@@ -273,6 +273,9 @@
 						if(!("rarity_text" in token_info)){
 							token_info["rarity_text"] = token_info["rarity"];
 						}
+						if(("hashtags" in token_info)){
+							token_info["hashtags"] = token_info["hashtags"].map(x => x.replace('&', "and").trim());
+						}
 						hashtags[symbol] = [...new Set([...hashtags[symbol] ,...token_info["hashtags"]])];
 						if(symbol == "MM-NFT"){
 							token_info["rarity"] = token_info["rarity"].split(" ").map(w => {return w[0].toUpperCase()+w[1].toUpperCase()}).join('');
